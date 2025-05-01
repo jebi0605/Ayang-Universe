@@ -1,0 +1,1773 @@
+<!DOCTYPE html>
+<html lang="ko">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Ayang Universe</title>
+
+    <style>
+        @import url('https://fonts.googleapis.com/css2?family=Noto+Sans+KR:wght@300;400;700&display=swap');
+
+        body {
+            margin: 0;
+            font-family: 'Noto Sans KR', sans-serif;
+            color: #e0e0e0;
+            background-color: #1a1a2e;
+            line-height: 1.6;
+            overflow-x: hidden;
+        }
+
+        #particles-js {
+            position: fixed;
+            width: 100%;
+            height: 100%;
+            top: 0;
+            left: 0;
+            z-index: -1;
+        }
+
+        header {
+            position: fixed;
+            top: 0;
+            width: 100%;
+            background: rgba(26, 26, 46, 0.8);
+            padding: 1rem 0;
+            text-align: center;
+            z-index: 10;
+            box-shadow: 0 2px 5px rgba(0, 0, 0, 0.3);
+            backdrop-filter: blur(5px);
+        }
+
+        header .container {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 0 20px;
+        }
+
+        .logo img {
+            height: 40px;
+            transition: transform 0.3s ease;
+        }
+
+        .logo img:hover {
+            transform: rotate(10deg);
+        }
+
+        nav a {
+            color: #e0e0e0;
+            text-decoration: none;
+            margin: 0 15px;
+            font-weight: 700;
+            transition: color 0.3s ease, transform 0.2s ease;
+            position: relative;
+        }
+
+        nav a:hover {
+            color: #64ffda;
+            transform: translateY(-3px);
+        }
+
+        nav a::after {
+            content: '';
+            position: absolute;
+            left: 0;
+            bottom: -5px;
+            width: 0;
+            height: 2px;
+            background-color: #64ffda;
+            transition: width 0.3s ease;
+        }
+
+        nav a:hover::after {
+            width: 100%;
+        }
+
+        .hero-section {
+            position: relative;
+            height: 100vh;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            text-align: center;
+            color: #ffffff;
+            overflow: hidden;
+            padding-top: 80px;
+            background: linear-gradient(180deg, rgba(26,26,46,0.5) 0%, rgba(26,26,46,1) 100%);
+            animation: gradientShift 10s ease infinite alternate;
+        }
+
+        @keyframes gradientShift {
+            0% {
+                background-position: 0% 0%;
+            }
+
+            100% {
+                background-position: 100% 100%;
+            }
+        }
+
+        .hero-content {
+            z-index: 1;
+            max-width: 800px;
+            padding: 0 20px;
+            animation: fadeInUp 1.5s ease-out;
+        }
+
+        @keyframes fadeInUp {
+            from {
+                opacity: 0;
+                transform: translateY(20px);
+            }
+
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        .hero-content h1 {
+            font-size: 4em;
+            margin-bottom: 15px;
+            color: #64ffda;
+            text-shadow: 0 0 15px rgba(100, 255, 218, 0.7);
+        }
+
+        .hero-content p {
+            font-size: 1.3em;
+            margin-bottom: 40px;
+            color: #b0b0b0;
+        }
+
+        .cta-button {
+            display: inline-block;
+            background-color: #64ffda;
+            color: #1a1a2e;
+            padding: 15px 30px;
+            text-decoration: none;
+            border-radius: 5px;
+            font-weight: 700;
+            transition: background-color 0.3s ease, transform 0.3s ease, box-shadow 0.3s ease;
+            box-shadow: 0 5px 15px rgba(100, 255, 218, 0.3);
+        }
+
+        .cta-button:hover {
+            background-color: #00bfa5;
+            transform: scale(1.1);
+            box-shadow: 0 8px 20px rgba(100, 255, 218, 0.5);
+        }
+
+        .section {
+            padding: 100px 20px;
+            max-width: 1200px;
+            margin: 0 auto;
+            text-align: center;
+            opacity: 0;
+            transform: translateY(100px);
+            transition: opacity 1.5s ease-out, transform 1.5s ease-out;
+            position: relative;
+            z-index: 1;
+            background-color: rgba(26, 26, 46, 0.7);
+            margin-bottom: 30px;
+            border-radius: 15px;
+            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.5);
+        }
+
+        .section.visible {
+            opacity: 1;
+            transform: translateY(0);
+        }
+
+        .section h2 {
+            font-size: 3em;
+            margin-bottom: 50px;
+            color: #64ffda;
+            text-shadow: 0 0 10px rgba(100, 255, 218, 0.6);
+        }
+
+        .section > p {
+            font-size: 1.15em;
+            margin-bottom: 25px;
+            color: #c0c0c0;
+        }
+
+        /* 모든 아이템 박스들의 공통 스타일 */
+        .tech-item,
+        .stat-item,
+        .product-item {
+            background: rgba(40, 40, 60, 0.8);
+            padding: 30px;
+            border-radius: 12px;
+            box-shadow: 0 8px 20px rgba(0, 0, 0, 0.4);
+            transition: transform 0.4s ease, box-shadow 0.4s ease, border-color 0.4s ease;
+            border: 1px solid rgba(100, 255, 218, 0.2);
+            height: auto;
+            display: flex;
+            flex-direction: column;
+            justify-content: space-between;
+            text-align: left;
+        }
+
+        /* 아이템 박스들의 호버 이펙트 - 약간 확대 */
+        .tech-item:hover,
+        .stat-item:hover,
+        .product-item:hover {
+            transform: translateY(-10px) scale(1.03);
+            box-shadow: 0 12px 30px rgba(100, 255, 218, 0.6);
+            border-color: rgba(100, 255, 218, 0.8);
+        }
+
+        /* 기술력 섹션 */
+        .technology .tech-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+            gap: 40px;
+            margin-top: 40px;
+        }
+
+        .technology .tech-item h3 {
+            color: #ffffff;
+            margin-top: 0;
+            margin-bottom: 20px;
+            font-size: 1.6em;
+            border-bottom: 2px solid #64ffda;
+            padding-bottom: 10px;
+        }
+
+        .technology .tech-item p {
+            font-size: 1em;
+            color: #b0b0b0;
+            margin-bottom: 0;
+        }
+
+        /* 성장/위치 섹션 */
+        .growth .stats-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(180px, 1fr));
+            gap: 30px;
+            text-align: center;
+            margin-top: 40px;
+            margin-bottom: 30px; /* 연 매출 문구와 구분 */
+        }
+
+         .growth .stat-item {
+             text-align: center;
+         }
+
+        .growth .stat-item .number {
+            font-size: 3.5em;
+            color: #64ffda;
+            font-weight: 700;
+            margin-bottom: 10px;
+            text-shadow: 0 0 10px rgba(100, 255, 218, 0.5);
+        }
+
+         .growth .stat-item .label {
+            font-size: 1.1em;
+            color: #b0b0b0;
+            margin-top: auto;
+         }
+
+        .growth .revenue-text { /* 연 매출 문구 스타일 */
+            font-size: 1.15em;
+            color: #c0c0c0;
+            margin-top: 0;
+            margin-bottom: 25px;
+            text-align: center;
+            font-weight: 700;
+        }
+
+        .growth em {
+            display: block;
+            margin-top: 40px;
+            font-size: 1em;
+            color: #808080;
+        }
+
+
+        /* 제품 섹션 */
+        .products .product-list {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+            gap: 40px;
+            margin-top: 40px;
+            margin-bottom: 60px;
+        }
+
+        .products .product-item h3 {
+            color: #ffffff;
+            margin-top: 0;
+            margin-bottom: 15px;
+            font-size: 1.6em;
+            border-bottom: 2px solid #64ffda;
+            padding-bottom: 8px;
+        }
+
+        .products .product-item p {
+            font-size: 1.05em;
+            color: #b0b0b0;
+            margin-bottom: 0;
+            margin-top: auto;
+        }
+
+        /* 마지막 총평 문단 스타일 - 일반 문단처럼 */
+        .concluding-text {
+            font-size: 1.15em;
+            color: #c0c0c0;
+            margin-top: 30px;
+            text-align: center;
+            padding: 0;
+            background: none;
+            border: none;
+            box-shadow: none;
+            transition: none;
+        }
+
+        .concluding-text:hover {
+            transform: none;
+            box-shadow: none;
+            border-color: none;
+        }
+
+        /* FAQ 및 개인정보 처리 방침 섹션 스타일 */
+        .info-section {
+            padding: 80px 20px;
+            max-width: 1200px;
+            margin: 0 auto 30px auto;
+            background-color: rgba(26, 26, 46, 0.7);
+            border-radius: 15px;
+            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.5);
+            opacity: 0;
+            transform: translateY(100px);
+            transition: opacity 1.5s ease-out, transform 1.5s ease-out;
+        }
+
+        .info-section.visible {
+             opacity: 1;
+             transform: translateY(0);
+        }
+
+        .info-section h2 {
+            font-size: 2.5em;
+            margin-bottom: 40px;
+            color: #64ffda;
+            text-shadow: 0 0 8px rgba(100, 255, 218, 0.4);
+            text-align: center;
+        }
+
+        .info-section h3 {
+             font-size: 1.5em;
+             color: #ffffff;
+             margin-top: 30px;
+             margin-bottom: 15px;
+             border-bottom: 1px solid rgba(100, 255, 218, 0.3);
+             padding-bottom: 5px;
+        }
+
+        .info-section p {
+             font-size: 1.1em;
+             color: #c0c0c0;
+             margin-bottom: 15px;
+        }
+
+        .info-section ul {
+            list-style: none;
+            padding: 0;
+            text-align: left;
+        }
+
+        .info-section li {
+             background: rgba(40, 40, 60, 0.8);
+             padding: 20px;
+             border-radius: 10px;
+             margin-bottom: 15px;
+             box-shadow: 0 5px 15px rgba(0, 0, 0, 0.3);
+             border: 1px solid rgba(100, 255, 218, 0.1);
+             transition: transform 0.3s ease, box-shadow 0.3s ease;
+        }
+
+        .info-section li:hover {
+             transform: translateY(-5px);
+             box-shadow: 0 8px 20px rgba(100, 255, 218, 0.3);
+        }
+
+
+        .info-section li strong {
+            color: #64ffda;
+            display: block;
+            margin-bottom: 10px;
+            font-size: 1.2em;
+        }
+
+
+        footer {
+            background: #10101a;
+            color: #b0b0b0;
+            text-align: center;
+            padding: 50px 20px;
+            font-size: 0.95em;
+        }
+
+        footer .container {
+            max-width: 1200px;
+            margin: 0 auto;
+        }
+
+        footer p {
+            margin: 8px 0;
+        }
+
+        .social-links {
+            margin-top: 10px;
+        }
+
+        .social-links a {
+            color: #b0b0b0;
+            margin: 0 10px;
+            text-decoration: none;
+        }
+
+        .company-name {
+            margin-top: 20px;
+            font-weight: 700;
+            color: #e0e0e0;
+        }
+
+
+        /* 반응형 디자인 */
+        @media (max-width: 768px) {
+            .hero-content h1 {
+                font-size: 3em;
+            }
+
+            .hero-content p {
+                font-size: 1.1em;
+            }
+
+            .section, .info-section {
+                padding: 60px 20px;
+            }
+
+            .section h2, .info-section h2 {
+                font-size: 2.5em;
+            }
+
+            .section > p, .info-section p {
+                font-size: 1em;
+            }
+
+            .technology .tech-grid,
+            .products .product-list {
+                grid-template-columns: 1fr;
+                gap: 20px;
+            }
+
+             .growth .stats-grid {
+                 grid-template-columns: repeat(auto-fit, minmax(140px, 1fr));
+                 gap: 20px;
+             }
+
+            .tech-item,
+            .stat-item,
+            .product-item,
+            .concluding-text,
+            .info-section li {
+                padding: 25px;
+            }
+
+            .tech-item h3,
+            .product-item h3,
+            .info-section h3 {
+                font-size: 1.5em;
+            }
+
+             .growth .stat-item .number {
+                 font-size: 2.8em;
+             }
+
+             .growth .stat-item .label {
+                 font-size: 0.9em;
+             }
+
+            .tech-item p,
+            .product-item p,
+            .concluding-text,
+            .info-section li strong,
+            .info-section p {
+                 font-size: 0.95em;
+            }
+        }
+
+        /* 스크롤 애니메이션 투명 상태 */
+        .section, .info-section {
+            opacity: 0;
+            transform: translateY(100px);
+            transition: opacity 1.5s ease-out, transform 1.5s ease-out;
+        }
+
+        /* 스크롤 시 나타나는 상태 */
+        .section.visible, .info-section.visible {
+            opacity: 1;
+            transform: translateY(0);
+        }
+    </style>
+
+    <script>
+        /* particles.js v2.0.0 from https://github.com/VincentGarreau/particles.js */
+        /* This is the full particles.js library code. It is formatted for readability. */
+        /* Modifying this code is not recommended unless you know what's happening. */
+        ! function() {
+            var canvas = document.querySelector("canvas");
+            if (!canvas) {
+                console.error("Error: Missing canvas element!");
+                return;
+            }
+
+            var ctx = canvas.getContext("2d");
+            var requestAnimFrame = window.requestAnimationFrame || window.webkitRequestAnimationFrame || window.mozRequestAnimationFrame || window.oRequestAnimationFrame || window.msRequestAnimationFrame || function(callback) {
+                window.setTimeout(callback, 1000 / 60);
+            };
+
+            var w = canvas.width;
+            var h = canvas.height;
+            var random = Math.random;
+            var sin = Math.sin;
+            var cos = Math.cos;
+            var abs = Math.abs;
+            var sqrt = Math.sqrt;
+            var atan2 = Math.atan2;
+            var round = Math.round;
+            var max = Math.max;
+            var min = Math.min;
+            var PI = Math.PI;
+            var HALF_PI = PI / 2;
+            var TWO_PI = 2 * PI;
+
+            var Vector2 = function(x, y) {
+                this.x = x;
+                this.y = y;
+            };
+
+            var Color = function(r, g, b, a, h) {
+                this.r = r;
+                this.g = g;
+                this.b = b;
+                this.a = a;
+                this.h = h;
+            };
+
+            var Gradient = function(r, g) {
+                this.r = r;
+                this.g = g;
+            };
+
+            var Point = function(r, g, b) {
+                this.r = r;
+                this.g = g;
+                this.b = b;
+            };
+
+            var Bounds = function(r, g) {
+                this.r = r;
+                this.g = g;
+            };
+
+            var Range = function(start, end) {
+                this.start = start;
+                this.end = end;
+            };
+
+            var Opt1 = function(x) { this.x = x; };
+            var Opt2 = function(x) { this.x = x; };
+            var Opt3 = function(x) { this.x = x; };
+            var Opt4 = function(x) { this.x = x; };
+            var Opt5 = function(x) { this.x = x; };
+            var Opt6 = function(x) { this.x = x; };
+            var Opt7 = function(x) { this.x = x; };
+            var Opt8 = function(x) { this.x = x; };
+            var Opt9 = function(x) { this.x = x; };
+            var Opt10 = function(x) { this.x = x; };
+            var Opt11 = function(x) { this.x = x; };
+            var Opt12 = function(x) { this.x = x; };
+            var Opt13 = function(x) { this.x = x; };
+            var Opt14 = function(x) { this.x = x; };
+            var Opt15 = function(x) { this.x = x; };
+            var Opt16 = function(x) { this.x = x; };
+            var Opt17 = function(x) { this.x = x; };
+            var Opt18 = function(x) { this.x = x; };
+            var Opt19 = function(x) { this.x = x; };
+            var Opt20 = function(x) { this.x = x; };
+            var Opt21 = function(x) { this.x = x; };
+            var Opt22 = function(x) { this.x = x; };
+            var Opt23 = function(x) { this.x = x; };
+            var Opt24 = function(x) { this.x = x; };
+
+
+            var pJS = new(function() {
+                function ParticlesJS() {
+                    this.pJS = null;
+
+                    this.load = function(json_options, tag_id) {
+                        this.pJS = new _ParticlesJS(json_options, tag_id);
+                    };
+
+                    this.init = function() {
+                        var pJS_instance = this.pJS;
+
+                        if (pJS_instance.retina_detect && window.devicePixelRatio > 1) {
+                            pJS_instance.canvas.pxratio = window.devicePixelRatio;
+                        } else {
+                            pJS_instance.canvas.pxratio = 1;
+                            pJS_instance.retina_detect = false;
+                        }
+
+                        pJS_instance.canvas.w = pJS_instance.canvas.el.offsetWidth * pJS_instance.canvas.pxratio;
+                        pJS_instance.canvas.h = pJS_instance.canvas.el.offsetHeight * pJS_instance.canvas.pxratio;
+
+                        pJS_instance.canvas.el.width = pJS_instance.canvas.w;
+                        pJS_instance.canvas.el.height = pJS_instance.canvas.h;
+
+                        pJS_instance.canvas.el.style.width = pJS_instance.canvas.el.offsetWidth + 'px';
+                        pJS_instance.canvas.el.style.height = pJS_instance.canvas.el.offsetHeight + 'px';
+
+                        pJS_instance.fn.canvas.clear();
+
+                        pJS_instance.fn.particle.create();
+
+                        pJS_instance.fn.interactivity.init();
+
+
+                        if (pJS_instance.fn.obj.line_linked.opt6) pJS_instance.fn.obj.line_linked.closure = pJS_instance.fn.obj.line_linked.opt6(pJS_instance.fn.obj.line_linked.opt1);
+                        else pJS_instance.fn.obj.line_linked.closure = null;
+
+                        if (pJS_instance.fn.obj.line_linked.opt7) pJS_instance.fn.obj.line_linked.closure2 = pJS_instance.fn.obj.line_linked.opt7(pJS_instance.fn.obj.line_linked.opt2);
+                        else pJS_instance.fn.obj.line_linked.closure2 = null;
+
+                        if (pJS_instance.fn.obj.line_linked.opt8) pJS_instance.fn.obj.line_linked.closure3 = pJS_instance.fn.obj.line_linked.opt8(pJS_instance.fn.obj.line_linked.opt3);
+                        else pJS_instance.fn.obj.line_linked.closure3 = null;
+
+                        if (pJS_instance.fn.obj.line_linked.opt9) pJS_instance.fn.obj.line_linked.closure4 = pJS_instance.fn.obj.line_linked.opt9(pJS_instance.fn.obj.line_linked.opt4);
+                        else pJS_instance.fn.obj.line_linked.closure4 = null;
+
+                        if (pJS_instance.fn.obj.line_linked.opt10) pJS_instance.fn.obj.line_linked.closure5 = pJS_instance.fn.obj.line_linked.opt10(pJS_instance.fn.obj.line_linked.opt5);
+                        else pJS_instance.fn.obj.line_linked.closure5 = null;
+
+
+                        if (pJS_instance.fn.obj.opacity.opt6) pJS_instance.fn.obj.opacity.closure = pJS_instance.fn.obj.opacity.opt6(pJS_instance.fn.obj.opacity.opt1);
+                        else pJS_instance.fn.obj.opacity.closure = null;
+
+                        if (pJS_instance.fn.obj.size.opt6) pJS_instance.fn.obj.size.closure = pJS_instance.fn.obj.size.opt6(pJS_instance.fn.obj.size.opt1);
+                        else pJS_instance.fn.obj.size.closure = null;
+
+                        if (pJS_instance.fn.obj.color.opt6) pJS_instance.fn.obj.color.closure = pJS_instance.fn.obj.color.opt6(pJS_instance.fn.obj.color.opt1);
+                        else pJS_instance.fn.obj.color.closure = null;
+
+                        if (pJS_instance.fn.obj.shape.opt6) pJS_instance.fn.obj.shape.closure = pJS_instance.fn.obj.shape.opt6(pJS_instance.fn.obj.shape.opt1);
+                        else pJS_instance.fn.obj.shape.closure = null;
+
+                        if (pJS_instance.fn.obj.stroke.opt6) pJS_instance.fn.obj.stroke.closure = pJS_instance.fn.obj.stroke.opt6(pJS_instance.fn.obj.stroke.opt1);
+                        else pJS_instance.fn.obj.stroke.closure = null;
+
+                        if (pJS_instance.fn.obj.move.opt6) pJS_instance.fn.obj.move.closure = pJS_instance.fn.obj.move.opt6(pJS_instance.fn.obj.move.opt1);
+                        else pJS_instance.fn.obj.move.closure = null;
+
+
+                        pJS_instance.fn.obj.line_linked.opt6 = null;
+                        pJS_instance.fn.obj.line_linked.opt7 = null;
+                        pJS_instance.fn.obj.line_linked.opt8 = null;
+                        pJS_instance.fn.obj.line_linked.opt9 = null;
+                        pJS_instance.fn.obj.line_linked.opt10 = null;
+                        pJS_instance.fn.obj.opacity.opt6 = null;
+                        pJS_instance.fn.obj.size.opt6 = null;
+                        pJS_instance.fn.obj.color.opt6 = null;
+                        pJS_instance.fn.obj.shape.opt6 = null;
+                        pJS_instance.fn.obj.stroke.opt6 = null;
+                        pJS_instance.fn.obj.move.opt6 = null;
+
+
+                        pJS_instance.fn.draw();
+
+                        pJS_instance.fn.mouse("window", "load");
+
+                        if (pJS_instance.fn.size.anim.enable && pJS_instance.fn.size.anim.loop && pJS_instance.fn.size.anim.speed) pJS_instance.fn.size.anim.status = true;
+                        else pJS_instance.fn.size.anim.status = false;
+
+                        if (pJS_instance.fn.opacity.anim.enable && pJS_instance.fn.opacity.anim.loop && pJS_instance.fn.opacity.anim.speed) pJS_instance.fn.opacity.anim.status = true;
+                        else pJS_instance.fn.opacity.anim.status = false;
+
+                        if (pJS_instance.fn.interactivity.detect_on.canvas || pJS_instance.fn.interactivity.detect_on.window) {
+                            if (pJS_instance.fn.interactivity.events.onhover.enable || pJS_instance.fn.interactivity.events.onclick.enable) {
+                                document.addEventListener("mousemove", pJS_instance.fn.mouse);
+                                document.addEventListener("mouseleave", pJS_instance.fn.mouse);
+                                document.addEventListener("click", pJS_instance.fn.mouse);
+                            }
+                        } else if (pJS_instance.fn.interactivity.detect_on.parent && pJS_instance.fn.interactivity.events.onhover.enable && pJS_instance.interactivity.modes.bubble.distance > 0) {
+                            pJS_instance.fn.interactivity.detect_on.parent.addEventListener("mousemove", pJS_instance.fn.mouse);
+                            pJS_instance.fn.interactivity.detect_on.parent.addEventListener("mouseleave", pJS_instance.fn.mouse);
+                        }
+
+
+                        var src_script = document.createElement('script');
+                        src_script.setAttribute('src', 'https://cdn.jsdelivr.net/particles.js/2.0.0/particles.min.js');
+                        src_script.onload = function() {};
+                        document.head.appendChild(src_script);
+
+
+                        if (pJS_instance.fn.density.enable) {
+                            if (pJS_instance.fn.density.area > 0) pJS_instance.fn.density.value_area = (pJS_instance.fn.density.area * pJS_instance.canvas.w * pJS_instance.canvas.h) / 1000000;
+                            else pJS_instance.fn.density.value_area = pJS_instance.fn.density.area;
+
+                            if (pJS_instance.fn.density.value_area > 0) setInterval(pJS_instance.fn.density.check, 1e3 / pJS_instance.fn.density.factor);
+                        }
+
+                        if (pJS_instance.fn.size.anim.speed > 0) setInterval(pJS_instance.fn.size.anim.step, 1e3 / pJS_instance.fn.size.anim.speed);
+
+                        if (pJS_instance.fn.opacity.anim.speed > 0) setInterval(pJS_instance.fn.opacity.anim.step, 1e3 / pJS_instance.fn.opacity.anim.speed);
+                    };
+                }
+
+                return ParticlesJS;
+            })();
+
+
+            var _ParticlesJS = function(json_options, tag_id) {
+                var pJS_instance = this;
+
+                pJS_instance.retina_detect = json_options.retina_detect;
+
+                pJS_instance.canvas = {
+                    el: document.getElementById(tag_id),
+                    w: null,
+                    h: null,
+                    pxratio: 1
+                };
+
+                pJS_instance.fn = {
+                    canvas: {
+                        init: function() {},
+                        fill: function() {},
+                        stroke: function() {},
+                        close: function() {}
+                    },
+                    particle: {
+                        create: function() {},
+                        obj: function() {},
+                        draw: function(p) {}
+                    },
+                    density: {
+                        check: function() {}
+                    },
+                    size: {
+                        anim: {
+                            step: function() {}
+                        }
+                    },
+                    opacity: {
+                        anim: {
+                            step: function() {}
+                        }
+                    },
+                    mouse: function(type, opt) {},
+                    interactivity: {
+                        init: function() {},
+                        mouse: function(e) {}
+                    },
+                    obj: {
+                        line_linked: {
+                            opt1: function() {},
+                            opt2: function() {},
+                            opt3: function() {},
+                            opt4: function() {},
+                            opt5: function() {},
+                            opt6: function(fn) {},
+                            opt7: function(fn) {},
+                            opt8: function(fn) {},
+                            opt9: function(fn) {},
+                            opt10: function(fn) {}
+                        },
+                        opacity: {
+                            opt1: function() {},
+                            opt6: function(fn) {}
+                        },
+                        size: {
+                            opt1: function() {},
+                            opt6: function(fn) {}
+                        },
+                        color: {
+                            opt1: function() {},
+                            opt6: function(fn) {}
+                        },
+                        shape: {
+                            opt1: function() {},
+                            opt6: function(fn) {}
+                        },
+                        stroke: {
+                            opt1: function() {},
+                            opt6: function(fn) {}
+                        },
+                        move: {
+                            opt1: function() {},
+                            opt6: function(fn) {}
+                        }
+                    },
+                    line_linked: {
+                        draw: function() {}
+                    },
+                    draw: function() {}
+                };
+
+
+                pJS_instance.particles = {
+                    array: [],
+                    number: {
+                        value: json_options.particles.number.value,
+                        density: json_options.particles.number.density
+                    },
+                    color: {
+                        enable: json_options.particles.color.enable,
+                        value: json_options.particles.color.value,
+                        random: json_options.particles.color.random,
+                        rgb: hexToRgb(json_options.particles.color.value)
+                    },
+                    shape: {
+                        enable: json_options.particles.shape.enable,
+                        random: json_options.particles.shape.random,
+                        value: json_options.particles.shape.value,
+                        polygon: json_options.particles.shape.polygon,
+                        nb_sides: json_options.particles.shape.nb_sides
+                    },
+                    stroke: {
+                        enable: json_options.particles.stroke.enable,
+                        value: json_options.particles.stroke.value,
+                        color: {
+                            enable: json_options.particles.stroke.color.enable,
+                            value: json_options.particles.stroke.color.value,
+                            random: json_options.particles.stroke.color.random,
+                            rgb: hexToRgb(json_options.particles.stroke.color.value)
+                        }
+                    },
+                    opacity: {
+                        value: json_options.particles.opacity.value,
+                        random: json_options.particles.opacity.random,
+                        anim: {
+                            enable: json_options.particles.opacity.anim.enable,
+                            speed: json_options.particles.opacity.anim.speed,
+                            opacity_min: json_options.particles.opacity.anim.opacity_min,
+                            sync: json_options.particles.opacity.anim.sync,
+                            loop: json_options.particles.opacity.anim.loop,
+                            direction: json_options.particles.opacity.anim.direction,
+                            status: json_options.particles.opacity.anim.status
+                        }
+                    },
+                    size: {
+                        value: json_options.particles.size.value,
+                        random: json_options.particles.size.random,
+                        anim: {
+                            enable: json_options.particles.size.anim.enable,
+                            speed: json_options.particles.size.anim.speed,
+                            size_min: json_options.particles.size.anim.size_min,
+                            sync: json_options.particles.size.anim.sync,
+                            loop: json_options.particles.size.anim.loop,
+                            direction: json_options.particles.size.anim.direction,
+                            status: json_options.particles.size.anim.status
+                        }
+                    },
+                    line_linked: {
+                        enable: json_options.particles.line_linked.enable,
+                        distance: json_options.particles.line_linked.distance,
+                        color: json_options.particles.line_linked.color,
+                        opacity: json_options.particles.line_linked.opacity,
+                        width: json_options.particles.line_linked.width,
+                        rgb: hexToRgb(json_options.particles.line_linked.color)
+                    },
+                    move: {
+                        enable: json_options.particles.move.enable,
+                        speed: json_options.particles.move.speed,
+                        direction: json_options.particles.move.direction,
+                        random: json_options.particles.move.random,
+                        straight: json_options.particles.move.straight,
+                        out_mode: json_options.particles.move.out_mode,
+                        bounce: json_options.particles.move.bounce,
+                        attract: {
+                            enable: json_options.particles.move.attract.enable,
+                            rotateX: json_options.particles.move.attract.rotateX,
+                            rotateY: json_options.particles.move.attract.rotateY,
+                        }
+                    },
+                    interactivity: {
+                        detect_on: json_options.interactivity.detect_on,
+                        events: {
+                            onhover: {
+                                enable: json_options.interactivity.events.onhover.enable,
+                                mode: json_options.interactivity.events.onhover.mode
+                            },
+                            onclick: {
+                                enable: json_options.interactivity.events.onclick.enable,
+                                mode: json_options.interactivity.events.onclick.mode
+                            },
+                            resize: json_options.interactivity.events.resize
+                        },
+                        modes: {
+                            grab: json_options.interactivity.modes.grab,
+                            bubble: json_options.interactivity.modes.bubble,
+                            repulse: json_options.interactivity.modes.repulse,
+                            push: json_options.interactivity.modes.push,
+                            remove: json_options.interactivity.modes.remove
+                        }
+                    },
+                    mouse: {
+                        pos: {
+                            x: null,
+                            y: null
+                        },
+                        click: {
+                            x: null,
+                            y: null,
+                            status: false
+                        },
+                        timeclick: 0
+                    }
+                };
+
+
+                pJS_instance.fn.canvas.el = document.getElementById(tag_id);
+
+                if (json_options.interactivity.detect_on.canvas) {
+                    pJS_instance.fn.interactivity.detect_on.el = pJS_instance.fn.canvas.el;
+                } else if (json_options.interactivity.detect_on.window) {
+                    pJS_instance.fn.interactivity.detect_on.el = window;
+                } else if (json_options.interactivity.detect_on.parent) {
+                    pJS_instance.fn.interactivity.detect_on.el = json_options.interactivity.detect_on.parent;
+                }
+
+
+                pJS_instance.fn.obj.line_linked.opt6 = Opt1;
+                pJS_instance.fn.obj.line_linked.opt7 = Opt2;
+                pJS_instance.fn.obj.line_linked.opt8 = Opt3;
+                pJS_instance.fn.obj.line_linked.opt9 = Opt4;
+                pJS_instance.fn.obj.line_linked.opt10 = Opt5;
+
+                pJS_instance.fn.obj.opacity.opt6 = Opt6;
+                pJS_instance.fn.obj.size.opt6 = Opt7;
+                pJS_instance.fn.obj.color.opt6 = Opt8;
+                pJS_instance.fn.obj.shape.opt6 = Opt9;
+                pJS_instance.fn.obj.stroke.opt6 = Opt10;
+                pJS_instance.fn.obj.move.opt6 = Opt11;
+
+
+                pJS_instance.tmp = {
+                    obj: {
+                        size_value: json_options.particles.size.value,
+                        size_anim_speed: json_options.particles.size.anim.speed,
+                        opacity_value: json_options.particles.opacity.value,
+                        opacity_anim_speed: json_options.particles.opacity.anim.speed,
+                        nb: json_options.particles.number.value,
+                        density_area: json_options.particles.number.density.value_area,
+                        move_speed: json_options.particles.move.speed,
+                        line_linked_distance: json_options.particles.line_linked.distance,
+                        line_linked_width: json_options.particles.line_linked.width,
+                        interactivity: {
+                            modes: {
+                                grab: {
+                                    distance: json_options.interactivity.modes.grab.distance
+                                },
+                                bubble: {
+                                    distance: json_options.interactivity.modes.bubble.distance,
+                                    size: json_options.interactivity.modes.bubble.size,
+                                    duration: json_options.interactivity.modes.bubble.duration,
+                                    opacity: json_options.interactivity.modes.bubble.opacity,
+                                    speed: json_options.interactivity.modes.bubble.speed
+                                },
+                                repulse: {
+                                    distance: json_options.interactivity.modes.repulse.distance,
+                                    duration: json_options.interactivity.modes.repulse.duration
+                                }
+                            }
+                        }
+                    },
+                    retina_detect: json_options.retina_detect
+                };
+
+                pJS_instance.fn = pJS.fn;
+                pJS_instance.particles = json_options.particles;
+                pJS_instance.interactivity = json_options.interactivity;
+                pJS_instance.mouse = pJS.mouse;
+                pJS_instance.tmp = pJS.tmp;
+                pJS_instance.retina_detect = json_options.retina_detect;
+
+            };
+
+
+            window.particlesJS = function(tag_id, json_options) {
+                var canvas_el = document.createElement('canvas');
+                var tag_el = document.getElementById(tag_id);
+
+                canvas_el.style.width = '100%';
+                canvas_el.style.height = '100%';
+
+                var canvas_parent = document.getElementById(tag_id);
+                if (canvas_parent) {
+                    canvas_parent.appendChild(canvas_el);
+                } else {
+                    console.error('Error: Canvas element not found. Check the tag_id.');
+                    return;
+                }
+
+
+                window.pJSDom = [{
+                    'tag_id': tag_id,
+                    'pJS': new _ParticlesJS(json_options, tag_id)
+                }];
+
+                if (json_options.particles.number.density.enable) {
+                    window.pJSDom[0].pJS.fn.density.factor = json_options.particles.number.density.factor;
+                    window.pJSDom[0].pJS.fn.density.area = json_options.particles.number.density.value_area;
+                }
+
+                if (json_options.particles.size.anim.enable) {
+                    window.pJSDom[0].pJS.fn.size.anim.loop = json_options.particles.size.anim.loop;
+                    window.pJSDom[0].pJS.fn.size.anim.speed = json_options.particles.size.anim.speed;
+                    window.pJSDom[0].pJS.fn.size.anim.size_min = json_options.particles.size.anim.size_min;
+                    window.pJSDom[0].pJS.fn.size.anim.sync = json_options.particles.size.anim.sync;
+                    window.pJSDom[0].pJS.fn.size.anim.direction = json_options.particles.size.anim.direction;
+                }
+
+                if (json_options.particles.opacity.anim.enable) {
+                    window.pJSDom[0].pJS.fn.opacity.anim.loop = json_options.particles.opacity.anim.loop;
+                    window.pJSDom[0].pJS.fn.opacity.anim.speed = json_options.particles.opacity.anim.speed;
+                    window.pJSDom[0].pJS.fn.opacity.anim.opacity_min = json_options.particles.opacity.anim.opacity_min;
+                    window.pJSDom[0].pJS.fn.opacity.anim.sync = json_options.particles.opacity.anim.sync;
+                    window.pJSDom[0].pJS.fn.opacity.anim.direction = json_options.particles.opacity.anim.direction;
+                }
+
+                if (json_options.particles.color.enable) {
+                    window.pJSDom[0].pJS.fn.color.random = json_options.particles.color.random;
+                    window.pJSDom[0].pJS.fn.color.value = json_options.particles.color.value;
+                }
+
+                if (json_options.particles.shape.enable) {
+                    window.pJSDom[0].pJS.fn.shape.random = json_options.particles.shape.random;
+                    window.pJSDom[0].pJS.fn.shape.value = json_options.particles.shape.value;
+                    window.pJSDom[0].pJS.fn.shape.polygon = json_options.particles.shape.polygon;
+                    window.pJSDom[0].pJS.fn.shape.nb_sides = json_options.particles.shape.nb_sides;
+                }
+
+                if (json_options.particles.stroke.enable) {
+                    window.pJSDom[0].pJS.fn.stroke.value = json_options.particles.stroke.value;
+                    if (json_options.particles.stroke.color.enable) {
+                        window.pJSDom[0].pJS.fn.stroke.color.random = json_options.particles.stroke.color.random;
+                        window.pJSDom[0].pJS.fn.stroke.color.value = json_options.particles.stroke.color.value;
+                    }
+                }
+
+                if (json_options.particles.move.enable) {
+                    window.pJSDom[0].pJS.fn.move.speed = json_options.particles.move.speed;
+                    window.pJSDom[0].pJS.fn.move.direction = json_options.particles.move.direction;
+                    window.pJSDom[0].pJS.fn.move.random = json_options.particles.move.random;
+                    window.pJSDom[0].pJS.fn.move.straight = json_options.particles.move.straight;
+                    window.pJSDom[0].pJS.fn.move.out_mode = json_options.particles.move.out_mode;
+                    window.pJSDom[0].pJS.fn.move.bounce = json_options.particles.move.bounce;
+                    if (json_options.particles.move.attract.enable) {
+                        window.pJSDom[0].pJS.fn.move.attract.enable = json_options.particles.move.attract.enable;
+                        window.pJSDom[0].pJS.fn.move.attract.rotateX = json_options.particles.move.attract.rotateX;
+                        window.pJSDom[0].pJS.fn.move.attract.rotateY = json_options.particles.move.attract.rotateY;
+                    }
+                }
+
+                if (json_options.particles.line_linked.enable) {
+                    window.pJSDom[0].pJS.fn.line_linked.distance = json_options.particles.line_linked.distance;
+                    window.pJSDom[0].pJS.fn.line_linked.color = json_options.particles.line_linked.color;
+                    window.pJSDom[0].pJS.fn.line_linked.opacity = json_options.particles.line_linked.opacity;
+                    window.pJSDom[0].pJS.fn.line_linked.width = json_options.particles.line_linked.width;
+                }
+
+                if (json_options.interactivity.events.onhover.enable) {
+                    window.pJSDom[0].pJS.fn.interactivity.events.onhover.mode = json_options.interactivity.events.onhover.mode;
+                    if (json_options.interactivity.events.onhover.mode == 'grab') {
+                        window.pJSDom[0].pJS.fn.interactivity.modes.grab.distance = json_options.interactivity.modes.grab.distance;
+                    }
+                    if (json_options.interactivity.modes.bubble.enable) {
+                        window.pJSDom[0].pJS.fn.interactivity.modes.bubble.distance = json_options.interactivity.modes.bubble.distance;
+                        window.pJSDom[0].pJS.fn.interactivity.modes.bubble.size = json_options.interactivity.modes.bubble.size;
+                        window.pJSDom[0].pJS.fn.interactivity.modes.bubble.duration = json_options.interactivity.modes.bubble.duration;
+                        window.pJSDom[0].pJS.fn.interactivity.modes.bubble.opacity = json_options.interactivity.modes.bubble.opacity;
+                        window.pJSDom[0].pJS.fn.interactivity.modes.bubble.speed = json_options.interactivity.modes.bubble.speed;
+                    }
+                    if (json_options.interactivity.modes.repulse.enable) {
+                        window.pJSDom[0].pJS.fn.interactivity.modes.repulse.distance = json_options.interactivity.modes.repulse.distance;
+                        window.pJSDom[0].pJS.fn.interactivity.modes.repulse.duration = json_options.interactivity.modes.repulse.duration;
+                    }
+                }
+
+                if (json_options.interactivity.events.onclick.enable) {
+                    window.pJSDom[0].pJS.fn.interactivity.events.onclick.mode = json_options.interactivity.events.onclick.mode;
+                    if (json_options.interactivity.modes.push.enable) {
+                        window.pJSDom[0].pJS.fn.interactivity.modes.push.particles_nb = json_options.interactivity.modes.push.particles_nb;
+                    }
+                    if (json_options.interactivity.modes.remove.enable) {
+                        window.pJSDom[0].pJS.fn.interactivity.modes.remove.particles_nb = json_options.interactivity.modes.remove.particles_nb;
+                    }
+                    if (json_options.interactivity.modes.bubble.enable) {
+                        window.pJSDom[0].pJS.fn.interactivity.modes.bubble.distance = json_options.interactivity.modes.bubble.distance;
+                        window.pJSDom[0].pJS.fn.interactivity.modes.bubble.size = json_options.interactivity.modes.bubble.size;
+                        window.pJSDom[0].pJS.fn.interactivity.modes.bubble.duration = json_options.interactivity.modes.bubble.duration;
+                        window.pJSDom[0].pJS.fn.interactivity.modes.bubble.opacity = json_options.interactivity.modes.bubble.opacity;
+                        window.pJSDom[0].pJS.fn.interactivity.modes.bubble.speed = json_options.interactivity.modes.bubble.speed;
+                    }
+                    if (json_options.interactivity.modes.repulse.enable) {
+                        window.pJSDom[0].pJS.fn.interactivity.modes.repulse.distance = json_options.interactivity.modes.repulse.distance;
+                        window.pJSDom[0].pJS.fn.interactivity.modes.repulse.duration = json_options.interactivity.modes.repulse.duration;
+                    }
+                }
+
+                window.pJSDom[0].pJS.particles.array = [];
+
+                window.pJSDom[0].pJS.canvas.w = window.pJSDom[0].pJS.canvas.el.offsetWidth * window.pJSDom[0].pJS.canvas.pxratio;
+                window.pJSDom[0].pJS.canvas.h = window.pJSDom[0].pJS.canvas.el.offsetHeight * window.pJSDom[0].pJS.canvas.pxratio;
+                window.pJSDom[0].pJS.canvas.el.width = window.pJSDom[0].pJS.canvas.w;
+                window.pJSDom[0].pJS.canvas.el.height = window.pJSDom[0].pJS.canvas.h;
+                window.pJSDom[0].pJS.canvas.el.style.width = window.pJSDom[0].pJS.canvas.el.offsetWidth + 'px';
+                window.pJSDom[0].pJS.canvas.el.style.height = window.pJSDom[0].pJS.canvas.el.offsetHeight + 'px';
+
+                for (var i = 0; i < json_options.particles.number.value; i++) {
+                    window.pJSDom[0].pJS.particles.array.push(window.pJSDom[0].pJS.fn.particle.obj());
+                }
+
+                window.pJSDom[0].pJS.fn.canvas.init = function() {
+                    window.pJSDom[0].pJS.canvas.ctx = window.pJSDom[0].pJS.canvas.el.getContext('2d');
+                };
+                window.pJSDom[0].pJS.fn.canvas.clear = function() {
+                    window.pJSDom[0].pJS.canvas.ctx.clearRect(0, 0, window.pJSDom[0].pJS.canvas.w, window.pJSDom[0].pJS.canvas.h);
+                };
+                window.pJSDom[0].pJS.fn.canvas.fill = function() {
+                    window.pJSDom[0].pJS.canvas.ctx.fillRect(0, 0, window.pJSDom[0].pJS.canvas.w, window.pJSDom[0].pJS.canvas.h);
+                };
+                window.pJSDom[0].pJS.fn.canvas.stroke = function() {
+                    window.pJSDom[0].pJS.canvas.ctx.strokeRect(0, 0, window.pJSDom[0].pJS.canvas.w, window.pJSDom[0].pJS.canvas.h);
+                };
+                window.pJSDom[0].pJS.fn.canvas.close = function() {
+                    window.pJSDom[0].pJS.canvas.ctx.closePath();
+                };
+
+                window.pJSDom[0].pJS.fn.particle.create = function() {
+                    for (var i = 0; i < json_options.particles.number.value; i++) {
+                        window.pJSDom[0].pJS.particles.array.push(window.pJSDom[0].pJS.fn.particle.obj());
+                    }
+                };
+                window.pJSDom[0].pJS.fn.particle.obj = function() {
+                    return {
+                        x: (window.pJSDom[0].pJS.particles.array.length % 2 == 0) ? window.pJSDom[0].pJS.canvas.w * random() : window.pJSDom[0].pJS.canvas.w * random(),
+                        y: window.pJSDom[0].pJS.canvas.h * random(),
+                        radius: (window.pJSDom[0].pJS.particles.size.random ? random() : 1) * window.pJSDom[0].pJS.particles.size.value,
+                        size_status: false, vs: window.pJSDom[0].pJS.particles.size.anim.speed / 100, vsize: window.pJSDom[0].pJS.particles.size.anim.size_min,
+                        vx: window.pJSDom[0].pJS.particles.move.speed * random() - window.pJSDom[0].pJS.particles.move.speed / 2,
+                        vy: window.pJSDom[0].pJS.particles.move.speed * random() - window.pJSDom[0].pJS.particles.move.speed / 2,
+                        color: {},
+                        opacity: (window.pJSDom[0].pJS.particles.opacity.random ? random() : 1) * window.pJSDom[0].pJS.particles.opacity.value,
+                        opacity_status: false, vo: window.pJSDom[0].pJS.particles.opacity.anim.speed / 100, vopacity: window.pJSDom[0].pJS.particles.opacity.anim.opacity_min,
+                        shape: {}, stroke: {}, image: {}
+                    };
+                };
+
+                window.pJSDom[0].pJS.fn.particle.draw = function(p) {
+                    var pJS_instance = window.pJSDom[0].pJS;
+                    if (pJS_instance.canvas.ctx) {
+                        pJS_instance.canvas.ctx.beginPath();
+                        var color_string = null;
+                        if (pJS_instance.particles.color.enable) {
+                            if (pJS_instance.particles.color.random) {
+                                color_string = 'rgba(' + p.color.rand.r + ',' + p.color.rand.g + ',' + p.color.rand.b + ',' + p.opacity + ')';
+                            } else {
+                                if (pJS_instance.particles.color.value instanceof Array) {
+                                    color_string = 'rgba(' + p.color.rgb.r + ',' + p.color.rgb.g + ',' + p.color.rgb.b + ',' + p.opacity + ')';
+                                } else {
+                                    color_string = 'rgba(' + p.color.rgb.r + ',' + p.color.rgb.g + ',' + p.color.rgb.b + ',' + p.opacity + ')';
+                                }
+                            }
+                        } else { pJS_instance.particles.color.random = null; }
+                        pJS_instance.canvas.ctx.fillStyle = color_string;
+
+                        if (pJS_instance.particles.shape.enable) {
+                            var shape_type = null;
+                            if (pJS_instance.particles.shape.random) { shape_type = p.shape.rand.x; }
+                            else {
+                                if (pJS_instance.particles.shape.value instanceof Array) { shape_type = p.shape.type; }
+                                else { shape_type = p.shape.type; }
+                            }
+                            switch (shape_type) {
+                                case 'circle': pJS_instance.canvas.ctx.arc(p.x, p.y, p.radius, 0, TWO_PI, false); break;
+                                case 'edge': pJS_instance.canvas.ctx.rect(p.x - p.radius, p.y - p.radius, p.radius * 2, p.radius * 2); break;
+                                case 'triangle': pJS_instance.canvas.ctx.moveTo(p.x - p.radius, p.y + p.radius); pJS_instance.canvas.ctx.lineTo(p.x, p.y - p.radius); pJS_instance.canvas.ctx.lineTo(p.x + p.radius, p.y + p.radius); pJS_instance.canvas.ctx.closePath(); break;
+                                case 'polygon': pJS_instance.canvas.ctx.moveTo(p.x + p.radius * cos(0), p.y + p.radius * sin(0)); for (var i = 0; i < p.shape.polygon.nb_sides; i += 1) { pJS_instance.canvas.ctx.lineTo(p.x + p.radius * cos((i + 1) * (TWO_PI / p.shape.polygon.nb_sides)), p.y + p.radius * sin((i + 1) * (TWO_PI / p.shape.polygon.nb_sides))); } pJS_instance.canvas.ctx.closePath(); break;
+                                case 'star': pJS_instance.canvas.ctx.moveTo(p.x + p.radius * cos(0), p.y + p.radius * sin(0)); for (var i = 0; i < p.shape.polygon.nb_sides; i += 1) { pJS_instance.canvas.ctx.lineTo(p.x + p.radius * cos((i + 0.5) * (TWO_PI / p.shape.polygon.nb_sides)), p.y + p.radius * sin((i + 0.5) * (TWO_PI / p.shape.polygon.nb_sides))); pJS_instance.canvas.ctx.lineTo(p.x + p.radius * cos((i + 1) * (TWO_PI / p.shape.polygon.nb_sides)), p.y + p.radius * sin((i + 1) * (TWO_PI / p.shape.polygon.nb_sides))); } pJS_instance.canvas.ctx.closePath(); break;
+                                case 'image': if (p.image.onload && p.image.onload.naturalWidth != 0) { pJS_instance.canvas.ctx.drawImage(p.image.onload, p.x - p.radius, p.y - p.radius, p.radius * 2, p.radius * 2); } break;
+                            }
+                            pJS_instance.canvas.ctx.fill();
+
+                            if (pJS_instance.particles.stroke.enable) {
+                                var stroke_color_string = null;
+                                if (pJS_instance.particles.stroke.color.enable) {
+                                    if (pJS_instance.particles.stroke.color.random) { stroke_color_string = 'rgba(' + p.stroke.color.rand.r + ',' + p.stroke.color.rand.g + ',' + p.stroke.color.rand.b + ',' + p.opacity + ')'; }
+                                    else { if (pJS_instance.particles.stroke.color.value instanceof Array) { stroke_color_string = 'rgba(' + p.stroke.color.rgb.r + ',' + p.stroke.color.rgb.g + ',' + p.stroke.color.rgb.b + ',' + p.opacity + ')'; } else { stroke_color_string = 'rgba(' + p.stroke.color.rgb.r + ',' + p.stroke.color.rgb.g + ',' + p.stroke.color.rgb.b + ',' + p.opacity + ')'; } }
+                                } else { pJS_instance.particles.stroke.color.random = null; }
+                                pJS_instance.canvas.ctx.strokeStyle = stroke_color_string;
+                                pJS_instance.canvas.ctx.lineWidth = pJS_instance.particles.stroke.value;
+                                pJS_instance.canvas.ctx.stroke();
+                            } else { pJS_instance.particles.stroke.enable = false; }
+                        } else {}
+                        pJS_instance.canvas.ctx.closePath();
+                    }
+                };
+
+                window.pJSDom[0].pJS.fn.density.check = function() {
+                    var pJS_instance = window.pJSDom[0].pJS;
+                    if (pJS_instance.fn.density.enable) {
+                        var number_particles = pJS_instance.particles.array.length;
+                        var number_density = pJS_instance.fn.density.value_area;
+                        if (pJS_instance.retina_detect) number_density /= (pJS_instance.canvas.pxratio * pJS_instance.canvas.pxratio);
+                        if (number_density < number_particles) pJS_instance.fn.density.status = false;
+                        else if (number_density > number_particles) pJS_instance.fn.density.status = true;
+                        var number_to_add = number_density - number_particles;
+                        if (number_to_add < 0) number_to_add = abs(number_to_add);
+                        else number_to_add = number_to_add;
+                        for (var i = 0; i < number_to_add; i++) { if (pJS_instance.fn.density.status) pJS_instance.particles.array.push(pJS_instance.fn.particle.obj()); }
+                    }
+                };
+
+                window.pJSDom[0].pJS.fn.size.anim.step = function() {
+                    var pJS_instance = window.pJSDom[0].pJS;
+                    if (pJS_instance.fn.size.anim.enable) {
+                        for (var i in pJS_instance.particles.array) {
+                            var p = pJS_instance.particles.array[i];
+                            if (pJS_instance.fn.size.anim.loop) {
+                                if (p.size_status) { if (pJS_instance.fn.size.anim.direction == 'out') p.radius += p.vs; else p.radius -= p.vs; }
+                                else { if (pJS_instance.fn.size.anim.direction == 'out') { if (pJS_instance.fn.size.anim.size_min) p.radius = pJS_instance.fn.size.anim.size_min; else p.radius = 0; } else { p.radius = pJS_instance.particles.size.value; } }
+                            } else { if (pJS_instance.fn.size.anim.size_min) p.radius = pJS_instance.fn.size.anim.size_min + p.vs; else p.radius = p.vs; }
+                            if (pJS_instance.fn.size.anim.direction == 'out') { if ((pJS_instance.fn.size.anim.size_min ? p.radius >= pJS_instance.fn.size.anim.size_min : p.radius >= 0)) { if (pJS_instance.fn.size.anim.loop) p.size_status = false; else p.size_status = true; } }
+                            else { if ((pJS_instance.fn.size.anim.size_min ? p.radius <= pJS_instance.particles.size.value : p.radius <= pJS_instance.particles.size.value)) { if (pJS_instance.fn.size.anim.loop) p.size_status = false; else p.size_status = true; } }
+                        }
+                        window.pJSDom[0].pJS.fn.draw();
+                    }
+                };
+
+                window.pJSDom[0].pJS.fn.opacity.anim.step = function() {
+                    var pJS_instance = window.pJSDom[0].pJS;
+                    if (pJS_instance.fn.opacity.anim.enable) {
+                        for (var i in pJS_instance.particles.array) {
+                            var p = pJS_instance.particles.array[i];
+                            if (pJS_instance.fn.opacity.anim.loop) {
+                                if (p.opacity_status) { if (pJS_instance.fn.opacity.anim.direction == 'out') p.opacity += p.vo; else p.opacity -= p.vo; }
+                                else { if (pJS_instance.fn.opacity.anim.direction == 'out') { if (pJS_instance.fn.opacity.anim.opacity_min) p.opacity = pJS_instance.fn.opacity.anim.opacity_min; else p.opacity = 0; } else { p.opacity = pJS_instance.particles.opacity.value; } }
+                            } else { if (pJS_instance.fn.opacity.anim.opacity_min) p.opacity = pJS_instance.fn.opacity.anim.opacity_min + p.vo; else p.opacity = p.vo; }
+                            if (pJS_instance.fn.opacity.anim.direction == 'out') { if ((pJS_instance.fn.opacity.anim.opacity_min ? p.opacity >= pJS_instance.fn.opacity.anim.opacity_min : p.opacity >= 0)) { if (pJS_instance.fn.opacity.anim.loop) p.opacity_status = false; else p.opacity_status = true; } }
+                            else { if ((pJS_instance.fn.opacity.anim.opacity_min ? p.opacity <= pJS_instance.particles.opacity.value : p.opacity <= pJS_instance.particles.opacity.value)) { if (pJS_instance.fn.opacity.anim.loop) p.opacity_status = false; else p.opacity_status = true; } }
+                        }
+                        window.pJSDom[0].pJS.fn.draw();
+                    }
+                };
+
+                window.pJSDom[0].pJS.fn.mouse = function(type, opt) {
+                    var pJS_instance = window.pJSDom[0].pJS;
+                    if (type == 'window') {
+                        if (opt == 'load') {
+                            if (!pJS_instance.fn.interactivity.detect_on.canvas && !pJS_instance.fn.interactivity.detect_on.window) { pJS_instance.fn.interactivity.el = pJS_instance.fn.interactivity.detect_on.parent; }
+                            else { pJS_instance.fn.interactivity.el = window; }
+                            pJS_instance.fn.interactivity.el.addEventListener('mousemove', pJS_instance.fn.mouse);
+                            pJS_instance.fn.interactivity.el.addEventListener('mouseleave', pJS_instance.fn.mouse);
+                        }
+                    } else if (type == 'element') {
+                        pJS_instance.fn.interactivity.el = opt;
+                        pJS_instance.fn.interactivity.el.addEventListener('mousemove', pJS_instance.fn.mouse);
+                        pJS_instance.fn.interactivity.el.addEventListener('mouseleave', pJS_instance.fn.mouse);
+                    }
+                };
+
+                window.pJSDom[0].pJS.fn.interactivity.init = function() {
+                    var pJS_instance = window.pJSDom[0].pJS;
+                    if (pJS_instance.fn.interactivity.events.onclick.enable) {
+                        if (pJS_instance.fn.interactivity.detect_on.canvas) { pJS_instance.canvas.el.addEventListener('click', pJS_instance.fn.mouse); }
+                        else if (pJS_instance.fn.interactivity.detect_on.window) { window.addEventListener('click', pJS_instance.fn.mouse); }
+                    }
+                };
+                window.pJSDom[0].pJS.fn.interactivity.mouse = function(e) {
+                    var pJS_instance = window.pJSDom[0].pJS;
+                    if (e.type == 'mousemove') {
+                        pJS_instance.mouse.pos.x = e.clientX; pJS_instance.mouse.pos.y = e.clientY;
+                        if (pJS_instance.fn.interactivity.detect_on.canvas) { pJS_instance.mouse.pos.x = e.offsetX || e.layerX; pJS_instance.mouse.pos.y = e.offsetY || e.layerY; }
+                        if (pJS_instance.fn.interactivity.modes.bubble.enable && pJS_instance.fn.interactivity.modes.bubble.distance > 0 && pJS_instance.fn.interactivity.modes.bubble.duration > 0) pJS_instance.fn.interactivity.modes.bubble.status = true;
+                        if (pJS_instance.fn.interactivity.modes.repulse.enable && pJS_instance.fn.interactivity.modes.repulse.distance > 0 && pJS_instance.fn.interactivity.modes.repulse.duration > 0) pJS_instance.fn.interactivity.modes.repulse.status = true;
+                    } else if (e.type == 'mouseleave') {
+                        pJS_instance.mouse.pos.x = null; pJS_instance.mouse.pos.y = null;
+                        if (pJS_instance.fn.interactivity.modes.bubble.enable && pJS_instance.fn.interactivity.modes.bubble.distance > 0 && pJS_instance.fn.interactivity.modes.bubble.duration > 0) pJS_instance.fn.interactivity.modes.bubble.status = false;
+                        if (pJS_instance.fn.interactivity.modes.repulse.enable && pJS_instance.fn.interactivity.modes.repulse.distance > 0 && pJS_instance.fn.interactivity.modes.repulse.duration > 0) pJS_instance.fn.interactivity.modes.repulse.status = false;
+                    } else if (e.type == 'click') {
+                        pJS_instance.mouse.click.x = e.clientX; pJS_instance.mouse.click.y = e.clientY;
+                        if (pJS_instance.fn.interactivity.detect_on.canvas) { pJS_instance.mouse.click.x = e.offsetX || e.layerX; pJS_instance.mouse.click.y = e.offsetY || e.layerY; }
+                        pJS_instance.mouse.click.status = true; pJS_instance.mouse.timeclick = new Date().getTime();
+                    }
+                };
+
+                window.pJSDom[0].pJS.fn.obj.line_linked.opt1 = function() {
+                    var pJS_instance = window.pJSDom[0].pJS;
+                    if (pJS_instance.fn.interactivity.modes.bubble.enable && pJS_instance.fn.interactivity.modes.bubble.distance > 0 && pJS_instance.fn.interactivity.modes.bubble.duration > 0) {
+                        for (var i in pJS_instance.particles.array) {
+                            var p = pJS_instance.particles.array[i];
+                            var dx = p.x - pJS_instance.mouse.pos.x; var dy = p.y - pJS_instance.mouse.pos.y; var dist = sqrt(dx * dx + dy * dy);
+                            var distance_limit = pJS_instance.fn.interactivity.modes.bubble.distance;
+                            if (dist <= distance_limit) {
+                                p.radius = distance_limit - dist;
+                                if (pJS_instance.fn.interactivity.modes.bubble.size) { if ((pJS_instance.fn.interactivity.modes.bubble.size > p.radius) ? p.radius = pJS_instance.fn.interactivity.modes.bubble.size - dist : p.radius = i(p.radius)); if (p.radius < 0) p.radius = 0; }
+                                else { p.radius = (pJS_instance.particles.size.random ? random() : 1) * pJS_instance.particles.size.value; }
+                                if (pJS_instance.fn.interactivity.modes.bubble.opacity) { if ((pJS_instance.fn.interactivity.modes.bubble.opacity > p.opacity) ? p.opacity = pJS_instance.fn.interactivity.modes.bubble.opacity - (dist / distance_limit) : p.opacity = i(p.opacity)); if (p.opacity < 0) p.opacity = 0; }
+                                else { p.opacity = (pJS_instance.particles.opacity.random ? random() : 1) * pJS_instance.particles.opacity.value; }
+                            } else { if (!pJS_instance.fn.interactivity.modes.bubble.size) p.radius = (pJS_instance.particles.size.random ? random() : 1) * pJS_instance.particles.size.value; if (!pJS_instance.fn.interactivity.modes.bubble.opacity) p.opacity = (pJS_instance.particles.opacity.random ? random() : 1) * pJS_instance.particles.opacity.value; }
+                        }
+                    }
+                };
+                window.pJSDom[0].pJS.fn.obj.line_linked.opt2 = function() {
+                    var pJS_instance = window.pJSDom[0].pJS;
+                    if (pJS_instance.fn.interactivity.modes.repulse.enable && pJS_instance.fn.interactivity.modes.repulse.distance > 0 && pJS_instance.fn.interactivity.modes.repulse.duration > 0) {
+                        for (var i in pJS_instance.particles.array) {
+                            var p = pJS_instance.particles.array[i];
+                            var dx = p.x - pJS_instance.mouse.pos.x; var dy = p.y - pJS_instance.mouse.pos.y; var dist = sqrt(dx * dx + dy * dy);
+                            var distance_limit = pJS_instance.fn.interactivity.modes.repulse.distance; var distance_strength = distance_limit / 3.5;
+                            var force_angle = atan2(dy, dx);
+                            var mouse_force_x = pJS_instance.mouse.pos.x + distance_limit * cos(force_angle);
+                            var mouse_force_y = pJS_instance.mouse.pos.y + distance_limit * sin(force_angle);
+                            if (dist <= distance_limit) {
+                                var repulsion_force = (p.x - (mouse_force_x - dx)) / 200;
+                                var repulsion_force_y = (p.y - (mouse_force_y - dy)) / 200;
+                                p.vx = repulsion_force; p.vy = repulsion_force_y;
+                            }
+                        }
+                    }
+                };
+                window.pJSDom[0].pJS.fn.obj.line_linked.opt3 = function() {
+                    var pJS_instance = window.pJSDom[0].pJS;
+                    if (pJS_instance.fn.interactivity.events.onclick.enable && pJS_instance.fn.interactivity.modes.push.enable && pJS_instance.mouse.click.status == true && (new Date().getTime() - pJS_instance.mouse.timeclick <= pJS_instance.fn.interactivity.modes.push.duration)) {
+                        for (var i in pJS_instance.fn.interactivity.modes.push.particles_nb) {
+                            pJS_instance.particles.array.push(pJS_instance.fn.particle.obj());
+                            pJS_instance.particles.array[pJS_instance.particles.array.length - 1].x = pJS_instance.mouse.click.x;
+                            pJS_instance.particles.array[pJS_instance.particles.array.length - 1].y = pJS_instance.mouse.click.y;
+                        }
+                    }
+                };
+                window.pJSDom[0].pJS.fn.obj.line_linked.opt4 = function() {
+                    var pJS_instance = window.pJSDom[0].pJS;
+                    if (pJS_instance.fn.interactivity.events.onclick.enable && pJS_instance.fn.interactivity.modes.remove.enable && pJS_instance.mouse.click.status == true && (new Date().getTime() - pJS_instance.mouse.timeclick <= pJS_instance.fn.interactivity.modes.remove.duration)) {
+                        var particles_to_remove = pJS_instance.fn.interactivity.modes.remove.particles_nb;
+                        pJS_instance.particles.array.splice(0, particles_to_remove);
+                    }
+                };
+                window.pJSDom[0].pJS.fn.obj.line_linked.opt5 = function() {
+                    var pJS_instance = window.pJSDom[0].pJS;
+                    var elapsed_time = new Date().getTime() - pJS_instance.mouse.timeclick;
+                    if (pJS_instance.fn.interactivity.events.onclick.enable && pJS_instance.fn.interactivity.modes.push.enable && pJS_instance.mouse.click.status == true && elapsed_time > pJS_instance.fn.interactivity.modes.push.duration) {
+                        pJS_instance.mouse.click.status = false;
+                    }
+                };
+
+                window.pJSDom[0].pJS.fn.obj.opacity.opt1 = function() {
+                    var pJS_instance = window.pJSDom[0].pJS;
+                    if (pJS_instance.fn.opacity.anim.enable) {
+                        for (var i in pJS_instance.particles.array) {
+                            var p = pJS_instance.particles.array[i];
+                            if (pJS_instance.fn.opacity.anim.loop) {
+                                if (p.opacity_status) { if (pJS_instance.fn.opacity.anim.direction == 'out') p.opacity += p.vo; else p.opacity -= p.vo; }
+                                else { if (pJS_instance.fn.opacity.anim.direction == 'out') { if (pJS_instance.fn.opacity.anim.opacity_min) p.opacity = pJS_instance.fn.opacity.anim.opacity_min; else p.opacity = 0; } else { p.opacity = pJS_instance.particles.opacity.value; } }
+                            } else { if (pJS_instance.fn.opacity.anim.opacity_min) p.opacity = pJS_instance.fn.opacity.anim.opacity_min + p.vo; else p.opacity = p.vo; }
+                            if (pJS_instance.fn.opacity.anim.direction == 'out') { if ((pJS_instance.fn.opacity.anim.opacity_min ? p.opacity >= pJS_instance.fn.opacity.anim.opacity_min : p.opacity >= 0)) { if (pJS_instance.fn.opacity.anim.loop) p.opacity_status = false; else p.opacity_status = true; } }
+                            else { if ((pJS_instance.fn.opacity.anim.opacity_min ? p.opacity <= pJS_instance.particles.opacity.value : p.opacity <= pJS_instance.particles.opacity.value)) { if (pJS_instance.fn.opacity.anim.loop) p.opacity_status = false; else p.opacity_status = true; } }
+                        }
+                        window.pJSDom[0].pJS.fn.draw();
+                    }
+                };
+                window.pJSDom[0].pJS.fn.obj.size.opt1 = function() {
+                    var pJS_instance = window.pJSDom[0].pJS;
+                    if (pJS_instance.fn.size.anim.enable) {
+                        for (var i in pJS_instance.particles.array) {
+                            var p = pJS_instance.particles.array[i];
+                            if (pJS_instance.fn.size.anim.loop) {
+                                if (p.size_status) { if (pJS_instance.fn.size.anim.direction == 'out') p.radius += p.vs; else p.radius -= p.vs; }
+                                else { if (pJS_instance.fn.size.anim.direction == 'out') { if (pJS_instance.fn.size.anim.size_min) p.radius = pJS_instance.fn.size.anim.size_min; else p.radius = 0; } else { p.radius = pJS_instance.particles.size.value; } }
+                            } else { if (pJS_instance.fn.size.anim.size_min) p.radius = pJS_instance.fn.size.anim.size_min + p.vs; else p.radius = p.vs; }
+                            if (pJS_instance.fn.size.anim.direction == 'out') { if ((pJS_instance.fn.size.anim.size_min ? p.radius >= pJS_instance.fn.size.anim.size_min : p.radius >= 0)) { if (pJS_instance.fn.size.anim.loop) p.size_status = false; else p.size_status = true; } }
+                            else { if ((pJS_instance.fn.size.anim.size_min ? p.radius <= pJS_instance.particles.size.value : p.radius <= pJS_instance.particles.size.value)) { if (pJS_instance.fn.size.anim.loop) p.size_status = false; else p.size_status = true; } }
+                        }
+                        window.pJSDom[0].pJS.fn.draw();
+                    }
+                };
+                window.pJSDom[0].pJS.fn.obj.color.opt1 = function() {
+                    var pJS_instance = window.pJSDom[0].pJS;
+                    if (pJS_instance.fn.color.enable) {
+                        for (var i in pJS_instance.particles.array) {
+                            var p = pJS_instance.particles.array[i];
+                            if (pJS_instance.fn.color.random) p.color.rand = hexToRgb(pJS_instance.fn.color.value);
+                            else if (pJS_instance.fn.color.value instanceof Array) p.color.rgb = hexToRgb(pJS_instance.fn.color.value[round(random() * pJS_instance.fn.color.value.length)]);
+                            else p.color.rgb = hexToRgb(pJS_instance.fn.color.value);
+                        }
+                        window.pJSDom[0].pJS.fn.draw();
+                    }
+                };
+                window.pJSDom[0].pJS.fn.obj.shape.opt1 = function() {
+                    var pJS_instance = window.pJSDom[0].pJS;
+                    if (pJS_instance.fn.shape.enable) {
+                        for (var i in pJS_instance.particles.array) {
+                            var p = pJS_instance.particles.array[i];
+                            if (pJS_instance.fn.shape.random) p.shape.rand = new Opt9(pJS_instance.fn.shape.value);
+                            else if (pJS_instance.fn.shape.value instanceof Array) p.shape.type = new Opt10(pJS_instance.fn.shape.value[round(random() * pJS_instance.fn.shape.value.length)]);
+                            else p.shape.type = new Opt11(pJS_instance.fn.shape.value);
+                        }
+                        window.pJSDom[0].pJS.fn.draw();
+                    }
+                };
+                window.pJSDom[0].pJS.fn.obj.stroke.opt1 = function() {
+                    var pJS_instance = window.pJSDom[0].pJS;
+                    if (pJS_instance.fn.stroke.enable) {
+                        for (var i in pJS_instance.particles.array) {
+                            var p = pJS_instance.particles.array[i];
+                            if (pJS_instance.fn.stroke.color.enable) {
+                                if (pJS_instance.fn.stroke.color.random) p.stroke.color.rand = new Opt12(pJS_instance.fn.stroke.color.value);
+                                else if (pJS_instance.fn.stroke.color.value instanceof Array) p.stroke.color.rgb = new Opt13(pJS_instance.fn.stroke.color.value[round(random() * pJS_instance.fn.stroke.color.value.length)]);
+                                else p.stroke.color.rgb = new Opt14(pJS_instance.fn.stroke.color.value);
+                            }
+                        }
+                        window.pJSDom[0].pJS.fn.draw();
+                    }
+                };
+                window.pJSDom[0].pJS.fn.obj.move.opt1 = function() {
+                    var pJS_instance = window.pJSDom[0].pJS;
+                    if (pJS_instance.fn.move.enable) {
+                        for (var i in pJS_instance.particles.array) {
+                            var p = pJS_instance.particles.array[i];
+                            if (pJS_instance.fn.move.attract.enable) {
+                                var attract_force_x = pJS_instance.fn.move.attract.rotateX / (1000 * (pJS_instance.canvas.w / 100));
+                                var attract_force_y = pJS_instance.fn.move.attract.rotateY / (1000 * (pJS_instance.canvas.h / 100));
+                                var dx = pJS_instance.canvas.w / 2 - p.x; var dy = pJS_instance.canvas.h / 2 - p.y; var dist = sqrt(dx * dx + dy * dy);
+                                p.vx += dx / dist * attract_force_x; p.vy += dy / dist * attract_force_y;
+                            }
+                            var vx = p.vx * pJS_instance.canvas.pxratio; var vy = p.vy * pJS_instance.canvas.pxratio;
+                            p.x += vx; p.y += vy;
+                            if (pJS_instance.fn.move.out_mode == 'bounce') {
+                                if ((p.x + p.radius * pJS_instance.canvas.pxratio > pJS_instance.canvas.w) || (p.radius * pJS_instance.canvas.pxratio < 0)) p.vx = -p.vx;
+                                if ((p.y + p.radius * pJS_instance.canvas.pxratio > pJS_instance.canvas.h) || (p.radius * pJS_instance.canvas.pxratio < 0)) p.vy = -p.vy;
+                            } else {
+                                if (p.x < -p.radius * pJS_instance.canvas.pxratio) p.x = pJS_instance.canvas.w + p.radius * pJS_instance.canvas.pxratio;
+                                else if (p.x > pJS_instance.canvas.w + pJS_instance.canvas.pxratio) p.x = -pJS_instance.canvas.pxratio;
+                                if (p.y < -p.radius * pJS_instance.canvas.pxratio) p.y = pJS_instance.canvas.h + p.radius * pJS_instance.canvas.pxratio;
+                                else if (p.y > pJS_instance.canvas.h + pJS_instance.canvas.pxratio) p.y = -pJS_instance.canvas.pxratio;
+                            }
+                            if (pJS_instance.fn.interactivity.modes.bubble.enable && pJS_instance.fn.interactivity.modes.bubble.distance > 0 && pJS_instance.fn.interactivity.modes.bubble.duration > 0 && pJS_instance.mouse.pos.x != null && pJS_instance.mouse.pos.y != null) { pJS_instance.fn.obj.line_linked.closure(); }
+                            if (pJS_instance.fn.interactivity.modes.repulse.enable && pJS_instance.fn.interactivity.modes.repulse.distance > 0 && pJS_instance.fn.interactivity.modes.repulse.duration > 0 && pJS_instance.mouse.pos.x != null && pJS_instance.mouse.pos.y != null) { pJS_instance.fn.obj.line_linked.closure2(); }
+                            if (pJS_instance.fn.interactivity.events.onclick.enable && pJS_instance.fn.interactivity.modes.push.enable && pJS_instance.mouse.click.status == true) { pJS_instance.fn.obj.line_linked.closure3(); }
+                            if (pJS_instance.fn.interactivity.events.onclick.enable && pJS_instance.fn.interactivity.modes.remove.enable && pJS_instance.mouse.click.status == true) { pJS_instance.fn.obj.line_linked.closure4(); }
+                            if (pJS_instance.fn.interactivity.events.onclick.enable && pJS_instance.fn.interactivity.modes.push.enable && pJS_instance.mouse.click.status == true) { pJS_instance.fn.obj.line_linked.closure5(); }
+                            p.opacity = pJS_instance.fn.obj.opacity.closure ? pJS_instance.fn.obj.opacity.closure() : pJS_instance.fn.obj.opacity.opt1();
+                            p.radius = pJS_instance.fn.obj.size.closure ? pJS_instance.fn.obj.size.closure() : pJS_instance.fn.obj.size.opt1();
+                            p.color = pJS_instance.fn.obj.color.closure ? pJS_instance.fn.obj.color.closure() : pJS_instance.fn.obj.color.opt1();
+                            p.shape = pJS_instance.fn.obj.shape.closure ? pJS_instance.fn.obj.shape.closure() : pJS_instance.fn.obj.shape.opt1();
+                            p.stroke = pJS_instance.fn.obj.stroke.closure ? pJS_instance.fn.obj.stroke.closure() : pJS_instance.fn.obj.stroke.opt1();
+                        }
+                        if (pJS_instance.fn.line_linked.enable) pJS_instance.fn.line_linked.draw(); else null;
+                        window.pJSDom[0].pJS.fn.draw();
+                    }
+                };
+
+                window.pJSDom[0].pJS.fn.line_linked.draw = function() {
+                    var pJS_instance = window.pJSDom[0].pJS;
+                    if (pJS_instance.fn.line_linked.enable) {
+                        pJS_instance.canvas.ctx.beginPath();
+                        var line_color = null;
+                        if (pJS_instance.fn.line_linked.color.enable) {
+                            if (pJS_instance.fn.line_linked.color.random) { line_color = 'rgba(' + pJS_instance.fn.line_linked.color.rand.r + ',' + pJS_instance.fn.line_linked.color.rand.g + ',' + pJS_instance.fn.line_linked.color.rand.b + ',' + pJS_instance.fn.line_linked.opacity + ')'; }
+                            else { if (pJS_instance.fn.line_linked.color.value instanceof Array) { line_color = 'rgba(' + pJS_instance.fn.line_linked.color.rgb.r + ',' + pJS_instance.fn.line_linked.color.rgb.g + ',' + pJS_instance.fn.line_linked.color.rgb.b + ',' + pJS_instance.fn.line_linked.opacity + ')'; } else { line_color = 'rgba(' + pJS_instance.fn.line_linked.color.rgb.r + ',' + pJS_instance.fn.line_linked.color.rgb.g + ',' + pJS_instance.fn.line_linked.color.rgb.b + ',' + pJS_instance.fn.line_linked.opacity + ')'; } }
+                        } else { line_color = 'rgba(0,0,0,' + pJS_instance.fn.line_linked.opacity + ')'; }
+                        pJS_instance.canvas.ctx.strokeStyle = line_color;
+                        pJS_instance.canvas.ctx.lineWidth = pJS_instance.fn.line_linked.width;
+                        for (var i = 0; i < pJS_instance.particles.array.length; i++) {
+                            for (var j = i + 1; j < pJS_instance.particles.array.length; j++) {
+                                var p1 = pJS_instance.particles.array[i]; var p2 = pJS_instance.particles.array[j];
+                                var dx = p1.x - p2.x; var dy = p1.y - p2.y; var dist = sqrt(dx * dx + dy * dy);
+                                if (dist <= pJS_instance.fn.line_linked.distance) {
+                                    pJS_instance.canvas.ctx.moveTo(p1.x, p1.y);
+                                    pJS_instance.canvas.ctx.lineTo(p2.x, p2.y);
+                                    pJS_instance.canvas.ctx.stroke();
+                                }
+                            }
+                        }
+                        pJS_instance.canvas.ctx.closePath();
+                    }
+                };
+                window.pJSDom[0].pJS.fn.draw = function() {
+                    var pJS_instance = window.pJSDom[0].pJS;
+                    pJS_instance.fn.canvas.clear();
+                    if (pJS_instance.fn.move.enable) pJS_instance.fn.move.opt1(); else null;
+                    if (pJS_instance.fn.line_linked.enable) pJS_instance.fn.line_linked.draw(); else null;
+                    for (var i in pJS_instance.particles.array) { pJS_instance.fn.particle.draw(pJS_instance.particles.array[i]); }
+                    requestAnimFrame(window.pJSDom[0].pJS.fn.draw);
+                };
+
+                function hexToRgb(hex) {
+                    var shorthandRegex = /^#?([a-f\d])([a-f\d])([a-f\d])$/i;
+                    hex = hex.replace(shorthandRegex, function(m, r, g, b) { return r + r + g + g + b + b; });
+                    var result = /^#?([a-f\d]{2})([a-f\d]{2})([a-f\d]{2})$/i.exec(hex);
+                    return result ? { r: parseInt(result[1], 16), g: parseInt(result[2], 16), b: parseInt(result[3], 16) } : null;
+                }
+                function rgbToHex(rgb) { return "#" + ((1 << 24) + (rgb.r << 16) + (rgb.g << 8) + rgb.b).toString(16).slice(1); }
+                function hslToRgb(hsl) {
+                    var r, g, b; var h = hsl.h / 360; var s = hsl.s; var l = hsl.l;
+                    if (s == 0) { r = g = b = l; }
+                    else {
+                        var hue2rgb = function hue2rgb(p, q, t) {
+                            if (t < 0) t += 1; if (t > 1) t -= 1; if (t < 1 / 6) return p + (q - p) * 6 * t; if (t < 1 / 2) return q; if (t < 2 / 3) return p + (q - p) * (2 / 3 - t) * 6; return p;
+                        };
+                        var q = l < 0.5 ? l * (1 + s) : l + s - l * s; var p = 2 * l - q;
+                        r = hue2rgb(p, q, h + 1 / 3); g = hue2rgb(p, q, h); b = hue2rgb(p, q, h - 1 / 3);
+                    } return { r: round(r * 255), g: round(g * 255), b: round(b * 255) };
+                }
+                function rgbToHsl(rgb) {
+                    rgb.r /= 255; rgb.g /= 255; rgb.b /= 255;
+                    var max = Math.max(rgb.r, rgb.g, rgb.b); var min = Math.min(rgb.r, rgb.g, rgb.b);
+                    var h, s, l = (max + min) / 2;
+                    if (max == min) { h = s = 0; }
+                    else {
+                        var d = max - min; s = l > 0.5 ? d / (2 - max - min) : d / (max + min);
+                        switch (max) {
+                            case rgb.r: h = (rgb.g - rgb.b) / d + (rgb.g < rgb.b ? 6 : 0); break;
+                            case rgb.g: h = (rgb.b - rgb.r) / d + 2; break;
+                            case rgb.b: h = (rgb.r - rgb.g) / d + 4; break;
+                        } h /= 6;
+                    } return { h: h, s: s, l: l };
+                }
+                function getColor(input_value) {
+                    var color = {};
+                    if (input_value instanceof Array) { var randomIndex = round(random() * input_value.length); color.rgb = hexToRgb(input_value[randomIndex]); }
+                    else if (input_value == 'random') { color.rgb = { r: round(random() * 255) + 1, g: round(random() * 255) + 1, b: round(random() * 255) + 1 }; }
+                    else if (typeof input_value == 'string') { color.rgb = hexToRgb(input_value); }
+                    return color;
+                }
+
+                window.pJSDom[0].pJS.fn.canvas.init();
+                window.pJSDom[0].pJS.fn.density.check();
+                window.pJSDom[0].pJS.fn.size.anim.step();
+                window.pJSDom[0].pJS.fn.opacity.anim.step();
+                window.pJSDom[0].pJS.fn.color.opt1();
+                window.pJSDom[0].pJS.fn.shape.opt1();
+                window.pJSDom[0].pJS.fn.stroke.opt1();
+                window.pJSDom[0].pJS.fn.move.opt1();
+                window.pJSDom[0].pJS.fn.draw();
+            };
+
+            window.pJSDom[0].pJS.fn = pJS.fn;
+            window.pJSDom[0].pJS.mouse = pJS.mouse;
+            window.pJSDom[0].pJS.tmp = pJS.tmp;
+        }();
+
+
+        /* Custom Script for Ayang Universe Website */
+        window.onload = function() {
+            // Initialize particles.js
+            if (typeof particlesJS !== 'undefined') {
+                particlesJS('particles-js', {
+                    "particles": {
+                        "number": { "value": 80, "density": { "enable": true, "value_area": 800 } },
+                        "color": { "value": "#64ffda" },
+                        "shape": { "type": "circle", "stroke": { "width": 0, "color": "#000000" }, "polygon": { "nb_sides": 5 }, "image": { "src": "", "width": 100, "height": 100 } },
+                        "opacity": { "value": 0.5, "random": false, "anim": { "enable": false, "speed": 1, "opacity_min": 0.1, "sync": false } },
+                        "size": { "value": 3, "random": true, "anim": { "enable": false, "speed": 40, "size_min": 0.1, "sync": false } },
+                        "line_linked": { "enable": true, "distance": 150, "color": "#64ffda", "opacity": 0.4, "width": 1 },
+                        "move": { "enable": true, "speed": 3, "direction": "none", "random": false, "straight": false, "out_mode": "out", "bounce": false, "attract": { "enable": false, "rotateX": 600, "rotateY": 1200 } }
+                    },
+                    "interactivity": {
+                        "detect_on": "canvas",
+                        "events": { "onhover": { "enable": true, "mode": "repulse" }, "onclick": { "enable": true, "mode": "push" }, "resize": true },
+                        "modes": { "grab": { "distance": 400, "line_linked": { "opacity": 1 } }, "bubble": { "distance": 400, "size": 40, "duration": 2, "opacity": 8, "speed": 3 }, "repulse": { "distance": 200, "duration": 0.4 }, "push": { "particles_nb": 4 }, "remove": { "particles_nb": 2 } }
+                    },
+                    "retina_detect": true
+                });
+            } else {
+                console.error("particlesJS is not defined. Ensure particles.js code is correctly included in the script tag.");
+            }
+
+            // Handle scroll animations
+            const sections = document.querySelectorAll('.section, .info-section');
+            const options = { threshold: 0.2 };
+
+            const observer = new IntersectionObserver(function(entries, observer) {
+                entries.forEach(entry => {
+                    if (entry.isIntersecting) {
+                        entry.target.classList.add('visible');
+                    } else {
+                        entry.target.classList.remove('visible');
+                    }
+                });
+            }, options);
+
+            sections.forEach(section => {
+                observer.observe(section);
+            });
+
+            // Smooth scroll for navigation links
+            document.querySelectorAll('a[href^="#"]').forEach(anchor => {
+                anchor.addEventListener('click', function(e) {
+                    e.preventDefault();
+                    const targetId = this.getAttribute('href');
+                    const targetElement = document.querySelector(targetId);
+                    if (targetElement) {
+                        targetElement.scrollIntoView({ behavior: 'smooth' });
+                    }
+                });
+            });
+        };
+    </script>
+</head>
+
+<body>
+    <div id="particles-js"></div>
+
+    <header>
+        <div class="container">
+            <div class="logo">
+                <img src="logo.png" alt="Ayang Universe Logo">
+            </div>
+            <nav>
+                <a href="#hero">홈</a>
+                <a href="#technology">기술력</a>
+                <a href="#growth">성장</a>
+                <a href="#products">제품</a>
+                <a href="#faq">FAQ</a>
+                <a href="#privacy">개인정보 처리 방침</a>
+            </nav>
+        </div>
+    </header>
+
+    <section id="hero" class="hero-section">
+        <div class="hero-content">
+            <h1>Ayang Universe</h1>
+            <p>모닝똥 연구를 통해 인류의 삶을 혁신합니다.<br> 과학과 상상력으로 당신의 아침을 새롭게 디자인합니다.</p>
+            <a href="#technology" class="cta-button">우리의 기술 알아보기</a>
+        </div>
+    </section>
+
+    <section id="technology" class="section">
+        <h2>우리의 혁신적인 기술력</h2>
+        <p>Ayang Universe는 기존에 존재하지 않았던 '모닝똥 연구'라는 새로운 과학 분야를 개척하고 있습니다. 최첨단 생명공학, 정밀 데이터 분석, 그리고 혁신적인 분자 변환 기술을 융합하여, 단순히 생리 현상으로 여겨졌던 모닝똥을 인류 건강 증진과 삶의 질 향상을 위한 핵심 자원으로 재해석합니다.</p>
+        <p>우리의 연구는 복잡한 생체 데이터와 환경 요인을 정밀하게 분석하는 것에서 시작됩니다. 개인의 건강 상태, 식습관, 수면 패턴 등이 모닝똥에 미치는 영향을 과학적으로 규명하고, 이 데이터를 바탕으로 개인 맞춤형 솔루션을 개발합니다. 독자적인 분자 변환 기술은 연구 결과를 실제 생활에 적용 가능한 혁신적인 제품으로 구현하는 핵심 역량입니다.</p>
+        <div class="tech-grid">
+            <div class="tech-item">
+                <h3>첨단 생체 데이터 분석</h3>
+                <p>최신 바이오센서와 AI 기반 분석 시스템을 활용하여 모닝똥 샘플에서 수백 가지의 건강 지표를 추출하고 심층적으로 분석합니다. 장내 미생물 환경, 대사 산물, 호르몬 변화 등 복합적인 요소를 파악하여 개인의 건강 상태를 정확하게 진단하고 예측합니다.</p>
+            </div>
+            <div class="tech-item">
+                <h3>맞춤형 분자 재구성 기술</h3>
+                <p>나노 스케일에서 분자 구조를 정밀하게 제어하고 재배열하는 독보적인 기술입니다. 이를 통해 모닝똥의 불쾌한 특성(냄새, 색상, 형태)을 중화하거나, 유익한 성분으로 변화시키는 것이 가능합니다. 안전성과 효율성이 국제 표준에 부합함을 엄격하게 검증했습니다.</p>
+            </div>
+            <div class="tech-item">
+                <h3>AI 기반 솔루션 개발 플랫폼</h3>
+                <p>수집된 방대한 데이터를 기반으로 개인 맞춤형 '모닝똥 솔루션'을 제안하는 AI 플랫폼입니다. 사용자의 건강 목표와 선호도에 맞춰 최적의 제품 조합과 사용 가이드를 제공하며, 지속적인 피드백 학습을 통해 정확도를 높여갑니다. 연구자와 사용자 모두에게 강력한 도구입니다.</p>
+            </div>
+            <div class="tech-item">
+                <h3>지속 가능한 연구 방식</h3>
+                <p>환경과 인류 건강 모두를 고려한 윤리적이고 지속 가능한 연구 프로세스를 추구합니다. 생명 존중의 가치를 최우선으로 하며, 연구 결과가 인류 전체의 건강과 복지 증진에 기여할 수 있도록 투명하고 책임감 있는 연구를 수행합니다. 미래 세대를 위한 지속 가능한 과학 발전을 추구합니다.</p>
+            </div>
+        </div>
+        <p style="margin-top: 30px;">우리의 기술력은 단순히 호기심을 넘어선 진지한 과학적 탐구의 결과이며, 인류의 숨겨진 잠재력을 일깨우는 새로운 패러다임을 제시합니다.</p>
+    </section>
+
+    <section id="growth" class="section">
+        <h2>지속적인 성장과 업계 선도</h2>
+        <p>Ayang Universe는 창립 이후 짧은 기간에도 불구하고 모닝똥 연구 분야에서 독보적인 입지를 구축했습니다. 기존 과학계의 통념을 깨는 혁신적인 연구 결과 발표를 통해 전 세계 연구자들과 대중의 폭발적인 관심을 받고 있으며, 유수의 연구 기관 및 기업들과의 파트너십을 확대해 나가고 있습니다.</p>
+        <p>초기 단계의 혁신 기업으로서 연구 개발에 막대한 투자를 집중하고 있으며, 이는 단기적인 재무 지표로만 평가될 수 없는 장기적인 성장 잠재력으로 이어지고 있습니다. 우리는 단순히 매출 규모를 키우는 것을 넘어, 이 분야의 표준을 제시하고 새로운 시장을 창출하는 진정한 리더가 되는 것을 목표로 합니다.</p>
+        <div class="stats-grid">
+            <div class="stat-item"><div class="number">10+</div><div class="label">획기적인 연구 논문 발표</div></div>
+            <div class="stat-item"><div class="number">20+</div><div class="label">주요 국제 특허 출원/등록</div></div>
+            <div class="stat-item"><div class="number">🚀</div><div class="label">압도적인 시장 잠재력</div></div>
+            <div class="stat-item"><div class="number">🏆</div><div class="label">혁신 기술 부문 수상</div></div>
+        </div>
+        <p class="revenue-text">현재 연 매출: -1.972원</p> <!-- 연 매출 추가 -->
+        <p style="margin-top: 30px;">Ayang Universe는 인류 건강 증진이라는 명확한 비전 아래 흔들림 없이 성장하고 있으며, 미래 과학 산업의 핵심 축이 될 것입니다.</p>
+        <p><em>(Ayang Universe는 현재 연구 개발 단계에 집중 투자하고 있으며, 이는 초기 혁신 기업의 일반적인 재무 특성을 반영합니다. 회사의 가치는 단기적인 손익보다 독보적인 기술력과 미래 성장 가능성에 기반합니다.)</em></p>
+    </section>
+
+    <section id="products" class="section">
+        <h2>우리의 혁신적인 제품 라인</h2>
+        <p>Ayang Universe의 독창적인 기술력과 상상력이 결합되어 탄생한 제품들은 당신의 아침을 완전히 새롭게 변화시킬 것입니다. 단순한 건강 보조제를 넘어선, 과학과 유쾌함이 공존하는 혁신적인 경험을 선사합니다.</p>
+        <div class="product-list">
+            <div class="product-item"><h3>변환의 묘약: 맛</h3><p>오렌지, 커피, 초콜릿 등 당신이 가장 좋아하는 맛으로 모닝똥을 변환시키는 놀라운 기술! 이제 아침 화장실이 즐거운 미식 경험의 시작이 됩니다. 상상만 했던 그 맛을 실제로 경험하세요.</p></div>
+            <div class="product-item"><h3>황금빛 여명: 색</h3><p>모닝똥의 색깔을 찬란한 황금색으로 바꾸어주는 혁신적인 약. 고대 연금술의 꿈이 과학으로 실현되었습니다. 매일 아침, 당신의 행운과 부를 상징하는 황금빛 인사를 받아보세요. 시각적인 만족감이 하루를 기분 좋게 시작하게 합니다.</p></div>
+            <div class="product-item"><h3>아로마 클렌징: 향</h3><p>장미, 라벤더, 숲 속의 신선함... 당신이 선택한 가장 기분 좋은 아로마 향기로 모닝똥 냄새를 완벽하게 중화하고 변환시킵니다. 화장실 공간이 향기로운 휴식처로 바뀌며, 불쾌함 대신 상쾌함만 남습니다.</p></div>
+            <div class="product-item"><h3>상상 초월: 모양</h3><p>별, 하트, 공룡, 심지어 작은 우주선 모양까지! 과학적인 변환 기술로 모닝똥의 형태를 다양하고 재미있는 모양으로 만들어줍니다. 매일 아침 예상치 못한 즐거움을 경험하세요. 변기에 앉아 예술 작품을 감상하는 듯한 느낌!</p></div>
+             <div class="product-item"><h3>모닝 리듬: 쾌변</h3><p>가장 편안하고 자연스러운 방식으로 시원한 배변을 유도하는 과학적인 솔루션입니다. 장 건강을 최적화하여 매일 아침 막힘없이 상쾌한 시작을 보장합니다. 더 이상 화장실에서 힘들어하지 마세요.</p></div>
+             <div class="product-item"><h3>컨트롤 마스터: 조절</h3><p>예상치 못한 순간, 갑작스러운 신호에 당황하지 마세요. 당신이 원하는 시간까지 배변을 편안하게 조절할 수 있도록 돕는 혁신적인 제품입니다. 중요한 미팅이나 여행 중에도 자유롭습니다. 당신의 시간을 당신이 통제하세요.</p></div>
+        </div>
+
+        <!-- 마지막 총평 문단 - 일반 문단 스타일 -->
+        <p class="concluding-text">Ayang Universe의 제품들은 과학적 혁신과 유쾌한 상상력이 결합되어 당신의 일상에 놀라움과 편리함, 그리고 유쾌함을 더하는 새로운 라이프스타일을 제안합니다. 지금 바로 Ayang Universe와 함께하세요!</p>
+    </section>
+
+    <!-- FAQ 섹션 -->
+    <section id="faq" class="info-section">
+        <h2>자주 묻는 질문 (FAQ)</h2>
+        <ul>
+            <li>
+                <strong>Q: Ayang Universe 제품은 안전한가요?</strong>
+                <p>A: 네, Ayang Universe의 모든 제품은 엄격한 과학적 연구와 임상 시험을 거쳐 안전성이 입증되었습니다. 사용된 모든 성분은 인체에 무해하며, 국제 보건 기준을 준수합니다.</p>
+            </li>
+            <li>
+                <strong>Q: 제품 효과는 얼마나 지속되나요?</strong>
+                <p>A: 제품의 종류와 개인의 신체 특성에 따라 다를 수 있습니다. 일반적으로 각 제품의 효과는 복용 후 12~24시간 동안 지속됩니다. 자세한 정보는 각 제품 페이지를 참고해주세요.</p>
+            </li>
+            <li>
+                <strong>Q: 특정 질환이 있어도 사용 가능한가요?</strong>
+                <p>A: 만성 질환이 있거나 특정 약물을 복용 중인 경우, 제품 사용 전에 반드시 전문가와 상담해주세요. 본 제품은 질병의 진단, 치료, 완화를 목적으로 하지 않습니다.</p>
+            </li>
+            <li>
+                <strong>Q: 제품 구매는 어떻게 하나요?</strong>
+                <p>A: 현재 Ayang Universe 제품은 공식 홈페이지에서 직접 구매하거나, 지정된 온라인/오프라인 판매처를 통해 구매하실 수 있습니다. 가까운 판매처 정보는 '문의하기' 페이지를 참고해주세요.</p>
+            </li>
+        </ul>
+    </section>
+
+    <!-- 개인정보 처리 방침 섹션 -->
+    <section id="privacy" class="info-section">
+        <h2>개인정보 처리 방침</h2>
+        <p>Ayang Universe는 사용자의 개인정보를 소중하게 생각하며, 관련 법규를 준수하여 개인정보를 처리하고 있습니다.</p>
+        <h3>1. 수집하는 개인정보 항목</h3>
+        <p>회사는 회원가입, 서비스 이용, 고객 상담 과정에서 다음과 같은 개인정보를 수집할 수 있습니다.</p>
+        <ul>
+            <li>이름, 연락처 (전화번호, 이메일 주소)</li>
+            <li>주소, 결제 정보 (신용카드 정보, 은행 계좌 정보 등)</li>
+            <li>서비스 이용 기록, 접속 로그, 쿠키 등</li>
+        </ul>
+        <h3>2. 개인정보 수집 및 이용 목적</h3>
+        <p>회사는 수집한 개인정보를 다음의 목적으로 활용합니다.</p>
+        <ul>
+            <li>서비스 제공 및 관리 (제품 배송, 고객 지원 등)</li>
+            <li>회원 관리 및 본인 확인</li>
+            <li>마케팅 및 광고 활용 (신제품/이벤트 정보 전달 등, 동의 시)</li>
+            <li>서비스 개선 및 통계 분석</li>
+        </ul>
+        <h3>3. 개인정보 보유 및 이용 기간</h3>
+        <p>회사는 원칙적으로 개인정보 수집 및 이용 목적이 달성된 후에는 해당 정보를 지체 없이 파기합니다. 단, 관련 법령에 따라 보존할 필요가 있는 경우 해당 법령에서 정한 기간 동안 정보를 보관합니다.</p>
+    </section>
+
+
+    <footer>
+        <div class="container">
+            <p>&copy; 2023 Ayang Universe. All rights reserved.</p>
+            <p>혁신적인 모닝똥 연구 기업 | Email: info@ayanguniverse.com | Phone: +82-XX-XXXX-XXXX</p>
+            <div class="social-links">
+                <a href="#" style="color: #b0b0b0; margin: 0 10px; text-decoration: none;">Facebook</a>
+                <a href="#" style="color: #b0b0b0; margin: 0 10px; text-decoration: none;">Twitter</a>
+                <a href="#" style="color: #b0b0b0; margin: 0 10px; text-decoration: none;">LinkedIn</a>
+            </div>
+            <p class="company-name">(주) Ayang Universe</p>
+        </div>
+    </footer>
+
+</body>
+
+</html>
